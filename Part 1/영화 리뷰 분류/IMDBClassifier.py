@@ -84,7 +84,6 @@ history = model.fit(partial_x_train,partial_y_train,
 import matplotlib.pyplot as plt
 
 history_dict = history.history
-print(history_dict.keys())
 loss = history_dict['loss']
 val_loss = history_dict['val_loss']
 
