@@ -47,7 +47,7 @@ y_test = np.asarray(test_labels).astype('float32')
 model = models.Sequential()
 model.add(layers.Dense(16, activation='relu', input_shape=(10000,)))
 model.add(layers.Dense(16, activation='relu'))
-model.add(layers.Dense(1,activation='sigmoid'))
+model.add(layers.Dense(1, activation='sigmoid'))
 
 """
 이제 옵티마이저와 손실 함수를 설정해야 한다.
