@@ -1,5 +1,4 @@
 from keras.datasets import boston_housing
-import numpy as np
 
 (train_data, train_targets), (test_data, test_targets) = boston_housing.load_data()
 
@@ -35,8 +34,8 @@ all_mae_histories = []
 
 for i in range(k):
     print('처리중인 폴드 #',i)
-    val_data = train_data[i * num_val_samples: (i+1) * num_val_samples]
-    val_targets = train_targets[i * num_val_samples: (i+1) * num_val_samples]
+    val_data = train_data[i * num_val_samples : (i+1) * num_val_samples]
+    val_targets = train_targets[i * num_val_samples : (i+1) * num_val_samples]
 
     partial_train_data = np.concatenate(
         [train_data[:i * num_val_samples], train_data[(i+1) * num_val_samples:]],
@@ -46,7 +45,8 @@ for i in range(k):
         axis=0)
 
     model = build_model()
-    history = model.fit(partial_train_data, partial_train_targets, epochs=num_epochs, batch_size=1, verbose=0)
+    history = model.fit(partial_train_data, partial_train_targets, validation_data=(val_data, val_targets),
+                        epochs=num_epochs, batch_size=1, verbose=0)
     #verbose=0이면 훈련 과정을 출력하지 않음
     mae_history = history.history['mae']
     all_mae_histories.append(mae_history)
@@ -71,3 +71,10 @@ plt.plot(range(1, len(smoothed_mae_history)+1), smoothed_mae_history)
 plt.xlabel('Epochs')
 plt.ylabel('Validation MAE')
 plt.show()
+
+model = build_model()
+model.fit(train_data, train_targets, epochs=80, batch_size=16)
+mse_score, mae_score = model.evaluate(test_data, test_targets)
+
+print(mse_score)
+print(mae_score)
